@@ -213,16 +213,28 @@ body {
 
 .form-footer {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
     gap: 16px;
-    flex-wrap: wrap;
+    align-items: stretch;
 }
 
 .form-actions {
     display: flex;
     gap: 12px;
-    justify-content: flex-end;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.form-support {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.form-support .hint {
+    margin: 0;
 }
 
 .btn {
@@ -257,6 +269,21 @@ body {
 
 .btn.ghost:hover {
     background: rgba(79, 70, 229, 0.12);
+}
+
+.btn.subtle {
+    background: transparent;
+    color: var(--muted);
+    padding: 0;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.btn.subtle:hover,
+.btn.subtle:focus-visible {
+    color: var(--primary);
+    transform: none;
+    box-shadow: none;
 }
 
 .hint {
