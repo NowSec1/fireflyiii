@@ -30,11 +30,3 @@ fi
 
 echo "Pushing branch '$branch' to '$repo_url'..."
 git push -u origin "$branch"
-
-config_file=".push_config"
-{
-  printf 'REMOTE_URL=%s\n' "$repo_url"
-  printf 'BRANCH=%s\n' "$branch"
-} >"$config_file"
-
-echo "Saved push settings to $config_file. You can run scripts/push_again.sh to reuse them."
