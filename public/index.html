@@ -11,6 +11,57 @@
 </head>
 <body>
     <div class="page">
+        <header class="header hero">
+            <div class="title-group">
+                <span class="badge">月度消费洞察</span>
+                <h1>Firefly III 消费分析仪表盘</h1>
+                <p class="subtitle">输入个人访问令牌并选择月份，快速了解当月消费结构</p>
+                <div class="hero-highlights">
+                    <div class="hero-chip">
+                        <span class="chip-title">自动聚合分页</span>
+                        <span class="chip-desc">完整同步跨页交易</span>
+                    </div>
+                    <div class="hero-chip">
+                        <span class="chip-title">多币种智能拆分</span>
+                        <span class="chip-desc">按币种查看消费画像</span>
+                    </div>
+                    <div class="hero-chip">
+                        <span class="chip-title">图表一目了然</span>
+                        <span class="chip-desc">饼状与柱状双图结合</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="main">
+            <section class="card form-card">
+                <div class="card-title">
+                    <h2>快速开始</h2>
+                    <p>填写凭据并选择月份，即可生成当月消费报告。</p>
+                </div>
+                <form id="query-form" class="form">
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label for="token">个人访问令牌</label>
+                            <input type="password" id="token" name="token" placeholder="请输入 Firefly III 个人访问令牌" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="base-url">API 地址（可选）</label>
+                            <input type="url" id="base-url" name="base-url" placeholder="例如：https://demo.firefly-iii.org/api/v1" />
+                            <p class="input-help">若留空，将使用后端预设地址。</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="month">查询月份</label>
+                            <input type="month" id="month" name="month" required />
+                            <p id="range-hint" class="input-hint">请选择查询月份，系统将自动匹配完整日期范围。</p>
+                        </div>
+                    </div>
+                    <div class="form-footer">
+                        <div class="form-actions">
+                            <button type="submit" class="btn primary">分析消费</button>
+                            <button type="button" id="reset-btn" class="btn ghost">清空结果</button>
+                        </div>
+                        <p class="hint">访问令牌仅用于代理请求，不会被记录或持久化。</p>
+                    </div>
         <header class="header">
             <div class="title-group">
                 <h1>Firefly III 消费分析仪表盘</h1>
@@ -42,6 +93,7 @@
             </section>
 
             <section class="results" id="results" hidden>
+                <div class="grid data-grid">
                 <div class="grid">
                     <div class="card highlight">
                         <div class="summary-header">

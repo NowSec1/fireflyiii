@@ -12,6 +12,7 @@ const datasetMeta = document.getElementById('dataset-meta');
 const toast = document.getElementById('toast');
 const baseUrlInput = document.getElementById('base-url');
 const loadingOverlay = document.getElementById('loading-overlay');
+const rangeHint = document.getElementById('range-hint');
 
 const pieCanvas = document.getElementById('category-pie');
 const barCanvas = document.getElementById('category-bar');
@@ -106,6 +107,23 @@ function savePreferences(preferences) {
     }
 }
 
+function toISODate(date) {
+    if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
+        return '';
+    }
+    const offsetMinutes = date.getTimezoneOffset();
+    const adjusted = new Date(date.getTime() - offsetMinutes * 60000);
+    return adjusted.toISOString().split('T')[0];
+}
+
+function getMonthRange(month) {
+    if (!month || !/^\d{4}-\d{2}$/.test(month)) {
+        return { start: '', end: '' };
+    }
+    const [year, monthPart] = month.split('-').map(Number);
+    const startDate = new Date(year, monthPart - 1, 1);
+    const endDate = new Date(year, monthPart, 0);
+    return { start: toISODate(startDate), end: toISODate(endDate) };
 function getMonthRange(month) {
     const [year, monthPart] = month.split('-').map(Number);
     const startDate = new Date(year, monthPart - 1, 1);
@@ -116,6 +134,11 @@ function getMonthRange(month) {
 
 async function fetchTransactions(token, month, baseUrl) {
     const { start, end } = getMonthRange(month);
+    if (!start || !end) {
+        const error = new Error('查询月份格式无效，请重新选择。');
+        error.details = ['请选择有效的月份，例如 2024-05'];
+        throw error;
+    }
     const response = await fetch('/api/transactions', {
         method: 'POST',
         headers: {
@@ -507,6 +530,7 @@ async function handleSubmit(event) {
     try {
         const { data, meta, range } = await fetchTransactions(token, month, baseUrl);
         activeMonth = month;
+        updateRangeHint(month);
 
         const transactions = flattenTransactions(data);
         const analysis = analyseByCurrency(transactions);
@@ -558,6 +582,7 @@ function handleReset() {
     const preferences = loadPreferences();
     baseUrlInput.value = preferences.baseUrl || '';
     monthInput.value = preferences.month || getCurrentMonthValue();
+    updateRangeHint(monthInput.value);
 
     showToast('已清空分析结果。');
 }
@@ -572,6 +597,20 @@ function getCurrentMonthValue() {
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 }
 
+function updateRangeHint(month) {
+    if (!rangeHint) return;
+    if (!month) {
+        rangeHint.textContent = '请选择查询月份，系统将自动匹配完整日期范围。';
+        return;
+    }
+    const { start, end } = getMonthRange(month);
+    if (start && end) {
+        rangeHint.textContent = `查询区间：${start} 至 ${end}`;
+    } else {
+        rangeHint.textContent = '无法识别该月份，请重新选择。';
+    }
+}
+
 function applyInitialPreferences() {
     const preferences = loadPreferences();
     if (preferences.baseUrl) {
@@ -582,9 +621,16 @@ function applyInitialPreferences() {
     } else {
         monthInput.value = getCurrentMonthValue();
     }
+    updateRangeHint(monthInput.value);
 }
 
 applyInitialPreferences();
 currencySelect.addEventListener('change', (event) => {
     renderCurrencyView(event.target.value);
+});
+monthInput.addEventListener('change', (event) => {
+    updateRangeHint(event.target.value);
+});
+monthInput.addEventListener('input', (event) => {
+    updateRangeHint(event.target.value);
 });
