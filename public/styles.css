@@ -8,6 +8,14 @@
     --muted: #6b7280;
     --border: #e2e8f0;
     --shadow: 0 24px 55px rgba(15, 23, 42, 0.08);
+    --bg: #f5f7fb;
+    --card-bg: #ffffff;
+    --primary: #4f46e5;
+    --primary-light: #6366f1;
+    --text: #1f2933;
+    --muted: #6b7280;
+    --border: #e2e8f0;
+    --shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     color: var(--text);
 }
@@ -21,6 +29,7 @@ body {
     background: radial-gradient(circle at top left, rgba(99, 102, 241, 0.18), transparent 55%),
         radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.16), transparent 50%),
         #eef2ff;
+    background: linear-gradient(135deg, #eef2ff 0%, #fdf2f8 100%);
     min-height: 100vh;
 }
 
@@ -31,6 +40,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 32px;
+    padding: 40px 24px 60px;
 }
 
 .header {
@@ -71,6 +81,14 @@ body {
     font-size: 2.4rem;
     font-weight: 700;
     color: #0f172a;
+    margin-bottom: 32px;
+}
+
+.title-group h1 {
+    margin: 0 0 8px;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #111827;
 }
 
 .subtitle {
@@ -163,6 +181,18 @@ body {
     display: grid;
     gap: 20px;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    backdrop-filter: blur(10px);
+}
+
+.highlight {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form {
+    display: grid;
+    gap: 20px;
 }
 
 .form-group {
@@ -219,6 +249,9 @@ body {
     display: flex;
     gap: 12px;
     justify-content: flex-end;
+.form-actions {
+    display: flex;
+    gap: 12px;
 }
 
 .btn {
@@ -281,6 +314,74 @@ body {
     flex-direction: column;
     gap: 16px;
     background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(14, 165, 233, 0.1));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.chart-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.chart-header h2 {
+    margin: 0;
+}
+
+.chart-description {
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.table-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+.table-header {
+    padding: 24px 28px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.currency {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: rgba(79, 70, 229, 0.08);
+}
+
+th, td {
+    padding: 16px 24px;
+    text-align: left;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+th {
+    font-weight: 600;
+    color: #111827;
+}
+
+tbody tr:hover {
+    background: rgba(243, 244, 246, 0.6);
+}
+
+.summary {
+    display: grid;
+    gap: 12px;
 }
 
 .summary-header {
@@ -333,6 +434,8 @@ body {
     align-items: center;
     background: linear-gradient(135deg, rgba(79, 70, 229, 0.09), rgba(14, 165, 233, 0.08));
     padding: 16px 18px;
+    background: rgba(79, 70, 229, 0.08);
+    padding: 14px 16px;
     border-radius: 16px;
 }
 
@@ -364,6 +467,7 @@ body {
 
 .meta-item {
     background: rgba(255, 255, 255, 0.8);
+    background: rgba(15, 23, 42, 0.04);
     border-radius: 14px;
     padding: 12px 14px;
     display: flex;
@@ -538,6 +642,9 @@ tbody tr:hover {
 @media (max-width: 768px) {
     .page {
         padding: 32px 16px 56px;
+@media (max-width: 768px) {
+    .page {
+        padding: 32px 16px 48px;
     }
 
     .header {
@@ -562,6 +669,8 @@ tbody tr:hover {
     .form-footer {
         flex-direction: column;
         align-items: stretch;
+    .form-actions {
+        flex-direction: column;
     }
 
     th, td {

@@ -124,6 +124,12 @@ function getMonthRange(month) {
     const startDate = new Date(year, monthPart - 1, 1);
     const endDate = new Date(year, monthPart, 0);
     return { start: toISODate(startDate), end: toISODate(endDate) };
+function getMonthRange(month) {
+    const [year, monthPart] = month.split('-').map(Number);
+    const startDate = new Date(year, monthPart - 1, 1);
+    const endDate = new Date(year, monthPart, 0);
+    const toISO = (date) => date.toISOString().split('T')[0];
+    return { start: toISO(startDate), end: toISO(endDate) };
 }
 
 async function fetchTransactions(token, month, baseUrl) {
