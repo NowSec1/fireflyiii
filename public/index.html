@@ -60,16 +60,41 @@
                             <button type="submit" class="btn primary">分析消费</button>
                             <button type="button" id="reset-btn" class="btn ghost">清空结果</button>
                         </div>
-                        <div class="form-support">
-                            <p class="hint">访问令牌仅用于代理请求，不会被记录或持久化。</p>
-                            <button type="button" id="clear-preferences" class="btn subtle" aria-label="清除记住的 API 地址与月份">清除记住的设置</button>
-                        </div>
+                        <p class="hint">访问令牌仅用于代理请求，不会被记录或持久化。</p>
                     </div>
+        <header class="header">
+            <div class="title-group">
+                <h1>Firefly III 消费分析仪表盘</h1>
+                <p class="subtitle">输入个人访问令牌并选择月份，快速了解当月消费结构</p>
+            </div>
+        </header>
+        <main class="main">
+            <section class="card">
+                <form id="query-form" class="form">
+                    <div class="form-group">
+                        <label for="token">个人访问令牌</label>
+                        <input type="password" id="token" name="token" placeholder="请输入 Firefly III 个人访问令牌" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="base-url">API 地址（可选）</label>
+                        <input type="url" id="base-url" name="base-url" placeholder="例如：https://demo.firefly-iii.org/api/v1" />
+                        <p class="input-help">若留空，则使用服务器预设的 Firefly III 地址。</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="month">查询月份</label>
+                        <input type="month" id="month" name="month" required />
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn primary">分析消费</button>
+                        <button type="button" id="reset-btn" class="btn ghost">清空结果</button>
+                    </div>
+                    <p class="hint">访问令牌仅用于向您的 Firefly III 实例发起代理请求，不会存储。</p>
                 </form>
             </section>
 
             <section class="results" id="results" hidden>
                 <div class="grid data-grid">
+                <div class="grid">
                     <div class="card highlight">
                         <div class="summary-header">
                             <h2>消费概览</h2>

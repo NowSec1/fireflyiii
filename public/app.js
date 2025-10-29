@@ -11,8 +11,6 @@ const datasetCard = document.getElementById('dataset-card');
 const datasetMeta = document.getElementById('dataset-meta');
 const toast = document.getElementById('toast');
 const baseUrlInput = document.getElementById('base-url');
-const monthInput = document.getElementById('month');
-const clearPrefsBtn = document.getElementById('clear-preferences');
 const loadingOverlay = document.getElementById('loading-overlay');
 const rangeHint = document.getElementById('range-hint');
 
@@ -109,20 +107,6 @@ function savePreferences(preferences) {
     }
 }
 
-function clearPreferences() {
-    try {
-        localStorage.removeItem(STORAGE_KEY);
-        const defaultMonth = getCurrentMonthValue();
-        baseUrlInput.value = '';
-        monthInput.value = defaultMonth;
-        updateRangeHint(defaultMonth);
-        showToast('已清除保存的设置。');
-    } catch (error) {
-        console.warn('Failed to clear preferences', error);
-        showToast('无法清除保存的设置，请稍后再试。', 'error');
-    }
-}
-
 function toISODate(date) {
     if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
         return '';
@@ -140,6 +124,12 @@ function getMonthRange(month) {
     const startDate = new Date(year, monthPart - 1, 1);
     const endDate = new Date(year, monthPart, 0);
     return { start: toISODate(startDate), end: toISODate(endDate) };
+function getMonthRange(month) {
+    const [year, monthPart] = month.split('-').map(Number);
+    const startDate = new Date(year, monthPart - 1, 1);
+    const endDate = new Date(year, monthPart, 0);
+    const toISO = (date) => date.toISOString().split('T')[0];
+    return { start: toISO(startDate), end: toISO(endDate) };
 }
 
 async function fetchTransactions(token, month, baseUrl) {
@@ -600,6 +590,8 @@ function handleReset() {
 form.addEventListener('submit', handleSubmit);
 resetBtn.addEventListener('click', handleReset);
 
+const monthInput = document.getElementById('month');
+
 function getCurrentMonthValue() {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
@@ -642,8 +634,3 @@ monthInput.addEventListener('change', (event) => {
 monthInput.addEventListener('input', (event) => {
     updateRangeHint(event.target.value);
 });
-if (clearPrefsBtn) {
-    clearPrefsBtn.addEventListener('click', () => {
-        clearPreferences();
-    });
-}
